@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="title">
+        
+    </h1>
+    <h2 id="user">
+
+    </h2>
+    <p class="connect">
+
+    </p>
+    <p class="disconnect">
+        
+    </p>
+     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        socket.on('connect', () => {
+            document.getElementsByClassName('connect')[0].innerText = "Connected to server!";
+        });
+
+        socket.emit("messageFromClientSide", "Client is saying hello!")
+
+        socket.on('messageFromServer', (data) => {
+           document.getElementById('title').innerText = data;
+        });
+
+        socket.on('disconnect', () => {
+            document.getElementsByClassName('disconnect')[0].innerText = "Disconnected from server!";
+        });
+
+        socket.on('newUserConnected', (data) => {
+            document.getElementById('user').innerText = data;
+        });
+    </script>
+</body>
+</html>
