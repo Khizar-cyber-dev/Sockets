@@ -36,7 +36,6 @@ io.on('connection', (socket) => {
     socket.on('messageFromClientSide', (data) => {
         console.log('Message from client:', data);
     });
-
     
 
     socket.emit("messageFromServer", "Server is saying hello!");

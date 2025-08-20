@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Namespace with Rooms</title>
+</head>
+<body>
+  <h1>Namespace with Rooms</h1>
+
+  <input id="roomInput" placeholder="Enter room name">
+  <button onclick="joinRoom()">Join Room</button>
+
+  <br><br>
+  <input id="msgInput" placeholder="Enter message">
+  <button onclick="sendMessage()">Send Message</button>
+
+  <ul id="messages"></ul>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io("/namespace");
+
+    socket.on('connect', () => {
+      console.log("Connected to namespace server");
+    });
+
+    function joinRoom() {
+      const room = document.getElementById('roomInput').value;
+      socket.emit('joinRoom', room);
+    }
+
+    function sendMessage() {
+      const room = document.getElementById('roomInput').value;
+      const message = document.getElementById('msgInput').value;
+      socket.emit('roomMessage', { roomName: room, message });
+    }
+
+    socket.on('message', (msg) => {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("messages").appendChild(li);
+    }); 
+  </script>
+</body>
+</html>
